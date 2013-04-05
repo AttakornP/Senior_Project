@@ -1,16 +1,16 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class Dice Test
+ * @Author  52363165 Attakorn  Poonkesorn
+ * @Since   2013 April 5
+ * @Note    JDK 1.7
+ * @Note    NetBeans IDE 7.1.2
+ * @Note    Windows7 32 bit
  */
 package snackladder;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author cartoonmed
- */
 public class DiceTest {
 
     public DiceTest() {
