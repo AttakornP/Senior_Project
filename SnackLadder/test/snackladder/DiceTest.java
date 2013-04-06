@@ -17,33 +17,26 @@ public class DiceTest {
     }
 
     /**
-     * Random point between 0 and 6
-     * @param   -
-     * @output  point (int)
-     * @test    random_dice() > 0 => True
+     * random_dice() > 0 => True
      */
     @Test
     public void testRandom_dice_1() {
         System.out.println("random_dice");
         Dice instance = new Dice();
         int result = instance.random_dice();
-        System.out.println(""+result);
+        System.out.println("" + result);
         assertTrue(result > 0);
     }
 
-    
     /**
-     * Random point between 0 and 6
-     * @param   -
-     * @output  point (int)
-     * @test    random_dice() < 7 => True
+     * random_dice() < 7 => True
      */
     @Test
     public void testRandom_dice_2() {
         System.out.println("random_dice");
         Dice instance = new Dice();
         int result = instance.random_dice();
-        System.out.println(""+result);
+        System.out.println("" + result);
         assertTrue(result < 7);
     }
 }

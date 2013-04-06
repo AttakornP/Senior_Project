@@ -14,7 +14,8 @@ import static org.junit.Assert.*;
 public class MoveTest {
     
     /**
-     * Test of move_forward method, of class Move.
+     * Move(0, 100) 
+     * move_forward(0, 4) => 4
      */
     @Test
     public void testMove_forward_1() {
@@ -28,6 +29,10 @@ public class MoveTest {
         assertEquals(expResult, result);
     }
     
+    /**
+     * Move(0, 100) 
+     * move_forward(99, 5) => 99
+     */
     @Test
     public void testMove_forward_2() {
         System.out.println("can't move forward");
@@ -41,7 +46,8 @@ public class MoveTest {
     }
 
     /**
-     * Test of move_backward method, of class Move.
+     * Move(0, 100) 
+     * move_backward(10, 5) => 5
      */
     @Test
     public void testMove_backward_1() {
@@ -55,6 +61,10 @@ public class MoveTest {
         assertEquals(expResult, result);
     }
     
+    /**
+     * Move(0, 100) 
+     * move_backward(3, 6) => 3
+     */
     @Test
     public void testMove_backward_2() {
         System.out.println("can't move backward");

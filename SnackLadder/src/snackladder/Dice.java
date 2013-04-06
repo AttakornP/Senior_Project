@@ -12,6 +12,17 @@ import java.util.Random;
 
 public class Dice {
     
+    /**
+     * Random point between 0 and 6
+     * @param   -
+     * @output  point (int)
+     * @test    random_dice() => 1 
+     *          random_dice() => 2
+     *          random_dice() => 3
+     *          random_dice() => 4
+     *          random_dice() => 5
+     *          random_dice() => 6
+     */
     public int random_dice(){
         Random rd = new Random();
         int point = Math.abs(rd.nextInt()%6 +1);
