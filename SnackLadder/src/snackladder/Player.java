@@ -19,6 +19,24 @@ public class Player {
     private Icon avatar;
     private boolean end_status;
 
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+    private boolean playing;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+    private int order;
+
     public Icon getAvatar() {
         return avatar;
     }
