@@ -9,6 +9,9 @@
 package snackladder;
 
 import java.util.Random;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Dice {
     
@@ -27,6 +30,18 @@ public class Dice {
         Random rd = new Random();
         int point = Math.abs(rd.nextInt()%6 +1);
         return point;
+    }
+    
+    public void set_point_pic(JButton bt_roll_dice, int point){
+        Icon pic_point;
+        if(point > 0 && point < 7){
+             pic_point = new ImageIcon(getClass().getResource("/img/"+point+".jpg"));
+        }
+        else{
+            pic_point = new ImageIcon(getClass().getResource("/img/dice.png"));
+        }
+        
+        bt_roll_dice.setIcon(pic_point);
     }
     
 }

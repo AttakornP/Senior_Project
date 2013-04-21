@@ -36,4 +36,18 @@ public class Event {
     public void point(Player avatar, int point) {
         avatar.setPoint(avatar.getPoint() + point);
     }
+    
+    /**
+     * Have Winner
+     * @param avatar
+     * @param target 
+     */
+    public boolean win(Player avatar, Move move) {
+        if(avatar.getCurrent_position() == move.getMax_move()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

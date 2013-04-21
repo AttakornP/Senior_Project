@@ -9,6 +9,7 @@
 package snackladder;
 
 import javax.swing.Icon;
+import javax.swing.JLabel;
 
 public class Player {
     
@@ -16,7 +17,7 @@ public class Player {
     private int point;
     private String name;
     private int move;
-    private Icon avatar;
+    private JLabel avatar;
     private boolean end_status;
 
     public boolean isPlaying() {
@@ -37,7 +38,7 @@ public class Player {
     }
     private int order;
 
-    public Icon getAvatar() {
+    public JLabel getAvatar() {
         return avatar;
     }
 
@@ -61,7 +62,7 @@ public class Player {
         return point;
     }
 
-    public void setAvatar(Icon avatar) {
+    public void setAvatar(JLabel avatar) {
         this.avatar = avatar;
     }
 
