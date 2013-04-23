@@ -16,7 +16,7 @@ import javax.swing.JLayeredPane;
 
 public class MainWindows extends javax.swing.JFrame {
 
-    Move move = new Move(0, 47);
+    Move move = new Move(0, 48);
     Player P1 = new Player();
     Player P2 = new Player();
     Player P3 = new Player();
@@ -27,7 +27,9 @@ public class MainWindows extends javax.swing.JFrame {
     int move_point = 0;
     int round;
     Player cur_player;
-    String[] table_snake = new String[48];
+    String[] table_snake = new String[49];
+    int[] event_snake = new int[49];
+    
 
     public MainWindows() {
         initComponents();
@@ -75,6 +77,14 @@ public class MainWindows extends javax.swing.JFrame {
         // create table
         int[] selected = {106,107,95,94,93,92,91,90,89,88,87,86,85,73,61,62,63,64,65,66,67,68,69,70,71,59,47,46,45,44,43,42,41,40,39,38,37,25,13,14,15,16,17,18,19,20,21,22,23};
         this.table_snake = table.create_table(selected);
+        
+        // create event
+        String[] all_event = {"11,36","23,5","24,46","29,10","32,8","40,17"};
+        int[] list_event = new int[selected.length];
+        for(int i = 0 ; i < selected.length ; i++){
+            list_event[i] = 0;
+        }
+        this.event_snake = event.crate_event(all_event, list_event);
         
         // set start value
         this.label_win.setVisible(false);
@@ -293,7 +303,16 @@ public class MainWindows extends javax.swing.JFrame {
         }
         
         // set new current position
-        this.cur_player.setCurrent_position(move.move_forward(this.cur_player.getCurrent_position(), this.cur_player.getMove()));
+        int old_pos = this.cur_player.getCurrent_position();
+        this.cur_player.setCurrent_position(move.move_forward(old_pos, this.cur_player.getMove()));
+        
+        //check event on new current position
+        int new_pos = this.cur_player.getCurrent_position();
+        if(this.event_snake[new_pos] != 0){
+            this.cur_player.setCurrent_position(this.event_snake[new_pos]);
+            Point p_new_pos = move.str_to_point(this.table_snake[this.event_snake[new_pos]]);
+            this.cur_player.getAvatar().setLocation(p_new_pos.x-20,p_new_pos.y-20);
+        }
         
         //set move point = 0 after play in turn
         this.cur_player.setMove(0);
@@ -303,7 +322,6 @@ public class MainWindows extends javax.swing.JFrame {
             label_win.setIcon(new ImageIcon(getClass().getResource("/img/winner_P"+this.cur_player.getOrder()+".jpg")));
             label_win.setVisible(true);
         }
-        
         
     }//GEN-LAST:event_label_next_posMouseClicked
 

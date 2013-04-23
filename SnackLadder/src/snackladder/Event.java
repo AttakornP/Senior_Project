@@ -50,4 +50,33 @@ public class Event {
             return false;
         }
     }
+    
+    
+    /**
+     * what_event
+     * @param avatar
+     * @param cur_event 
+     */
+    public void what_event(Player avatar, String cur_event){ 
+        String type = cur_event.split(",")[1];
+        int point = Integer.parseInt(cur_event.split(",")[2]);
+        if(type.equals("J")){
+            this.jump(avatar, point);
+        }
+        else if(type.equals("M")){
+            this.move(avatar, point);
+        }
+        else if(type.equals("P")){
+            this.point(avatar, point);
+        }
+    }
+    
+    public int[] crate_event(String[] all_event, int[] list_event){
+        for(int i = 0 ; i < all_event.length ; i++){
+            int target = Integer.parseInt(all_event[i].split(",")[0]);
+            list_event[target] = Integer.parseInt(all_event[i].split(",")[1]);
+        }
+        return list_event;
+    }
+    
 }
