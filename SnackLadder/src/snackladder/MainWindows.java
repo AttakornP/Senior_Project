@@ -16,7 +16,8 @@ import javax.swing.JLayeredPane;
 
 public class MainWindows extends javax.swing.JFrame {
 
-    Move move = new Move(0, 48);
+    int number = 65;
+    Move move = new Move(0, this.number-1);
     Player P1 = new Player();
     Player P2 = new Player();
     Player P3 = new Player();
@@ -27,8 +28,8 @@ public class MainWindows extends javax.swing.JFrame {
     int move_point = 0;
     int round;
     Player cur_player;
-    String[] table_snake = new String[49];
-    int[] event_snake = new int[49];
+    String[] table_snake = new String[this.number];
+    int[] event_snake = new int[this.number];
     
 
     public MainWindows() {
@@ -75,11 +76,12 @@ public class MainWindows extends javax.swing.JFrame {
         P4.setOrder(4);
         
         // create table
-        int[] selected = {106,107,95,94,93,92,91,90,89,88,87,86,85,73,61,62,63,64,65,66,67,68,69,70,71,59,47,46,45,44,43,42,41,40,39,38,37,25,13,14,15,16,17,18,19,20,21,22,23};
+        int[] selected = {84,96,97,98,99,100,101,102,103,104,105,106,107,95,83,82,81,80,79,78,77,76,75,74,73,72,60,48,49,50,51,52,53,54,55,56,57,58,59,47,35,34,33,32,31,30,29,28,27,26,25,24,12,0,1,2,3,4,5,6,7,8,9,10,11};
+        System.out.println("lenght"+selected.length);
         this.table_snake = table.create_table(selected);
         
         // create event
-        String[] all_event = {"11,36","23,5","24,46","29,10","32,8","40,17"};
+        String[] all_event = {"27,51", "6,30", "19,58", "43,63", "15,37","54,28", "50,22", "35,4", "46,37", "61,18", "40,7"};
         int[] list_event = new int[selected.length];
         for(int i = 0 ; i < selected.length ; i++){
             list_event[i] = 0;
@@ -87,9 +89,15 @@ public class MainWindows extends javax.swing.JFrame {
         this.event_snake = event.crate_event(all_event, list_event);
         
         // set start value
-        this.label_win.setVisible(false);
+//        this.label_win.setVisible(false);
+        panel_table.setVisible(true);
         this.label_next_pos.setVisible(false);
         this.round = 0;
+        Point st_point = move.str_to_point(this.table_snake[0]);
+        this.P1.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        this.P2.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        this.P3.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        this.P4.getAvatar().setLocation(st_point.x-20,st_point.y-20);
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +106,6 @@ public class MainWindows extends javax.swing.JFrame {
 
         panel_bg = new javax.swing.JPanel();
         layer_bg = new javax.swing.JLayeredPane();
-        label_win = new javax.swing.JLabel();
         panel_table = new javax.swing.JPanel();
         layer_table = new javax.swing.JLayeredPane();
         layer_play = new javax.swing.JLayeredPane();
@@ -120,6 +127,7 @@ public class MainWindows extends javax.swing.JFrame {
         bt_menu = new javax.swing.JButton();
         bt_exit = new javax.swing.JButton();
         label_control = new javax.swing.JLabel();
+        label_win = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Snake and Ladder Game");
@@ -127,10 +135,6 @@ public class MainWindows extends javax.swing.JFrame {
         setResizable(false);
 
         panel_bg.setBackground(new java.awt.Color(255, 255, 255));
-
-        label_win.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/winner_P1.jpg"))); // NOI18N
-        label_win.setBounds(140, 10, 650, 650);
-        layer_bg.add(label_win, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         layer_play.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -266,6 +270,10 @@ public class MainWindows extends javax.swing.JFrame {
         panel_control.setBounds(900, 0, 300, 666);
         layer_bg.add(panel_control, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        label_win.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/winner_P1.jpg"))); // NOI18N
+        label_win.setBounds(140, 10, 650, 650);
+        layer_bg.add(label_win, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout panel_bgLayout = new javax.swing.GroupLayout(panel_bg);
         panel_bg.setLayout(panel_bgLayout);
         panel_bgLayout.setHorizontalGroup(
@@ -320,7 +328,8 @@ public class MainWindows extends javax.swing.JFrame {
         //check win
         if(event.win(this.cur_player, move)){
             label_win.setIcon(new ImageIcon(getClass().getResource("/img/winner_P"+this.cur_player.getOrder()+".jpg")));
-            label_win.setVisible(true);
+//            label_win.setVisible(true);
+            panel_table.setVisible(false);
         }
         
     }//GEN-LAST:event_label_next_posMouseClicked
@@ -328,21 +337,22 @@ public class MainWindows extends javax.swing.JFrame {
     private void bt_roll_diceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_roll_diceActionPerformed
         this.label_next_pos.setVisible(true);
         //check who is playing
-        if(this.round %4 == 0){
+        int plyr = 2;
+        if(this.round % plyr == 0){
             this.cur_player = P1;
             label_st_P1.setIcon(new ImageIcon(getClass().getResource("/img/Status_P1.png")));
             label_st_P2.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
             label_st_P3.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
             label_st_P4.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
         }
-        else if(this.round %4 == 1) {
+        else if(this.round % plyr == 1) {
             this.cur_player = P2;
             label_st_P1.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
             label_st_P2.setIcon(new ImageIcon(getClass().getResource("/img/Status_P2.png")));
             label_st_P3.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
             label_st_P4.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
         }
-        else if(this.round %4 == 2){
+        else if(this.round % plyr == 2){
             this.cur_player = P3;
             label_st_P1.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
             label_st_P2.setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));

@@ -28,7 +28,7 @@ public class Dice {
      */
     public int random_dice(){
         Random rd = new Random();
-        int point = Math.abs(rd.nextInt()%6 +1);
+        int point = Math.abs(rd.nextInt()%6)+1;
         return point;
     }
     
