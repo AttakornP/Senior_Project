@@ -6,8 +6,9 @@
  * @Note    NetBeans IDE 7.1.2
  * @Note    Windows7 32 bit
  */
-package snackladder;
+package CoreAsset;
 
+import snackladder.*;
 import java.util.Random;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

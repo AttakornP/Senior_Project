@@ -6,28 +6,47 @@
  * @Note    NetBeans IDE 7.1.2
  * @Note    Windows7 32 bit
  */
-package snackladder;
+package CoreAsset;
 
+import snackladder.*;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
 public class Player {
     
     private int current_position;
-    private int point;
     private String name;
     private int move;
     private JLabel avatar;
+    private int point;
+    private JLabel label_point;
+    private boolean playing;
+
+    public void setLabel_playing(JLabel label_playing) {
+        this.label_playing = label_playing;
+    }
+    private JLabel label_playing;
+
+    public JLabel getLabel_playing() {
+        return label_playing;
+    }
+
+    public void setLabel_point(JLabel label_point) {
+        this.label_point = label_point;
+    }
     private boolean end_status;
 
     public boolean isPlaying() {
         return playing;
     }
 
+    public JLabel getLabel_point() {
+        return label_point;
+    }
+
     public void setPlaying(boolean playing) {
         this.playing = playing;
     }
-    private boolean playing;
 
     public int getOrder() {
         return order;

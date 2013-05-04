@@ -6,7 +6,10 @@
  * @Note    NetBeans IDE 7.1.2
  * @Note    Windows7 32 bit
  */
-package snackladder;
+package CoreAsset;
+
+import javax.swing.ImageIcon;
+import snackladder.*;
 
 public class Event {
 
@@ -51,25 +54,7 @@ public class Event {
         }
     }
     
-    
-    /**
-     * what_event
-     * @param avatar
-     * @param cur_event 
-     */
-    public void what_event(Player avatar, String cur_event){ 
-        String type = cur_event.split(",")[1];
-        int point = Integer.parseInt(cur_event.split(",")[2]);
-        if(type.equals("J")){
-            this.jump(avatar, point);
-        }
-        else if(type.equals("M")){
-            this.move(avatar, point);
-        }
-        else if(type.equals("P")){
-            this.point(avatar, point);
-        }
-    }
+
     
     public int[] crate_event(String[] all_event, int[] list_event){
         for(int i = 0 ; i < all_event.length ; i++){
@@ -77,6 +62,40 @@ public class Event {
             list_event[target] = Integer.parseInt(all_event[i].split(",")[1]);
         }
         return list_event;
+    }
+    
+    
+    public Player selected_player(Player[] list_plyr, int no_player, int round){
+        Player cur_player = new HardChoice.Player();
+        if(round % no_player == 0){
+            cur_player = list_plyr[0];
+            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P1.png")));
+            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
+            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
+            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
+        }
+        else if(round % no_player == 1) {
+            cur_player = list_plyr[1];
+            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
+            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P2.png")));
+            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
+            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
+        }
+        else if(round % no_player == 2){
+            cur_player = list_plyr[2];
+            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
+            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
+            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P3.png")));
+            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
+        }
+        else {
+            cur_player = list_plyr[3];
+            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
+            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
+            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
+            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P4.png")));
+        }
+        return cur_player;
     }
     
 }
