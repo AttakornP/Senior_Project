@@ -10,7 +10,8 @@ package snackladder;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-
+import CoreAsset.Event;
+import CoreAsset.Player;
 public class EventTest {
 
     /**

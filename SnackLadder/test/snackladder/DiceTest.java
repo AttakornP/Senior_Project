@@ -10,6 +10,8 @@ package snackladder;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import CoreAsset.Dice;
+
 
 public class DiceTest {
 
