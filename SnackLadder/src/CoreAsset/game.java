@@ -1,3 +1,5 @@
+package CoreAsset;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -144,6 +146,7 @@ public class game extends javax.swing.JFrame {
         javax.swing.JButton I11 = new javax.swing.JButton();
         I12 = new javax.swing.JButton();
         jLayeredPane3 = new javax.swing.JLayeredPane();
+        bt_clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1128,6 +1131,16 @@ public class game extends javax.swing.JFrame {
         jLayeredPane1.add(jLayeredPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLayeredPane3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        bt_clear.setText("Clear");
+        bt_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_clearActionPerformed(evt);
+            }
+        });
+        bt_clear.setBounds(50, 620, 73, 30);
+        jLayeredPane3.add(bt_clear, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jLayeredPane3.setBounds(888, 0, 312, 666);
         jLayeredPane1.add(jLayeredPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -1697,6 +1710,11 @@ this.text += "3,";
         System.out.println(text);
     }//GEN-LAST:event_I12ActionPerformed
 
+    private void bt_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_clearActionPerformed
+        // TODO add your handling code here:
+        this.text = "";
+    }//GEN-LAST:event_bt_clearActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1835,6 +1853,7 @@ this.text += "3,";
     private javax.swing.JButton I7;
     private javax.swing.JButton I8;
     private javax.swing.JButton I9;
+    private javax.swing.JButton bt_clear;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JLayeredPane jLayeredPane3;
