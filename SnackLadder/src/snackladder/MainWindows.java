@@ -18,17 +18,18 @@ import CoreAsset.Player;
 import CoreAsset.Event;
 import CoreAsset.Move;
 import CoreAsset.Table;
-        
+import CoreAsset.Gui;
 
 public class MainWindows extends javax.swing.JFrame {
 
     int number = 65;
-    Move move = new Move(0, this.number-1);
+    Move move = new Move(0, this.number - 1);
     Player P1 = new Player();
     Player P2 = new Player();
     Player P3 = new Player();
     Player P4 = new Player();
     Dice dice = new Dice();
+    Gui gui = new Gui();
     Table table = new Table();
     Event event = new Event();
     int move_point = 0;
@@ -36,8 +37,8 @@ public class MainWindows extends javax.swing.JFrame {
     Player cur_player;
     String[] table_snake = new String[this.number];
     int[] event_snake = new int[this.number];
-    Player[] list_plyr = {P1,P2,P3,P4};
-    
+    Player[] list_plyr = {P1, P2, P3, P4};
+    int plyr_no = 4;
 
     public MainWindows() {
         initComponents();
@@ -45,76 +46,35 @@ public class MainWindows extends javax.swing.JFrame {
     }
 
     public void set_start_game() {
-        // Set Player1
-        P1.setCurrent_position(0);
-        P1.setMove(0);
-        P1.setAvatar(label_P1);
-        P1.setEnd_status(false);
-        P1.setName("Med");
-        P1.setPoint(0);
-        P1.setPlaying(true);
-        P1.setOrder(1);
-        P1.setLabel_playing(this.label_st_P1);
-        P1.setPlaying(false);
-        // Set Player2
-        P2.setCurrent_position(0);
-        P2.setMove(6);
-        P2.setAvatar(label_P2);
-        P2.setEnd_status(false);
-        P2.setName("Yuiiz");
-        P2.setPoint(0);
-        P2.setPlaying(true);
-        P2.setOrder(2);
-        P2.setLabel_playing(this.label_st_P2);
-        P2.setPlaying(false);
-        // Set Player2
-        P3.setCurrent_position(0);
-        P3.setMove(6);
-        P3.setAvatar(label_P3);
-        P3.setEnd_status(false);
-        P3.setName("Meddy");
-        P3.setPoint(0);
-        P3.setPlaying(true);
-        P3.setOrder(3);
-        P3.setLabel_playing(this.label_st_P3);
-        P3.setPlaying(false);
-        // Set Player2
-        P4.setCurrent_position(0);
-        P4.setMove(6);
-        P4.setAvatar(label_P4);
-        P4.setEnd_status(false);
-        P4.setName("Yuyi");
-        P4.setPoint(0);
-        P4.setPlaying(true);
-        P4.setOrder(4);
-        P4.setLabel_playing(this.label_st_P4);
-        P4.setPlaying(false);
-        
+
+        JLabel[] list_label = {label_P1, label_P2, label_P3, label_P4};
+        JLabel[] label_play = {label_st_P1, label_st_P2, label_st_P3, label_st_P4};
+        gui.set_init_value_player(this.list_plyr, list_label, label_play);
+
+
         // create table
-        int[] selected = {84,96,97,98,99,100,101,102,103,104,105,106,107,95,83,82,81,80,79,78,77,76,75,74,73,72,60,48,49,50,51,52,53,54,55,56,57,58,59,47,35,34,33,32,31,30,29,28,27,26,25,24,12,0,1,2,3,4,5,6,7,8,9,10,11};
-        System.out.println("lenght"+selected.length);
+        int[] selected = {84, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 95, 83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 60, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 47, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        System.out.println("lenght" + selected.length);
         this.table_snake = table.create_table(selected);
-        
+
         // create event
-        String[] all_event = {"27,51", "6,30", "19,58", "43,63", "15,37","54,28", "50,22", "35,4", "46,37", "61,18", "40,7"};
+        String[] all_event = {"27,51", "6,30", "19,58", "43,63", "15,37", "54,28", "50,22", "35,4", "46,37", "61,18", "40,7"};
         int[] list_event = new int[selected.length];
-        for(int i = 0 ; i < selected.length ; i++){
+        for (int i = 0; i < selected.length; i++) {
             list_event[i] = 0;
         }
         this.event_snake = event.crate_event(all_event, list_event);
-        
+
         // set start value
-//        this.label_win.setVisible(false);
         this.bt_end_turn.setEnabled(false);
         panel_table.setVisible(true);
         bt_roll_dice.setEnabled(true);
         this.label_move_next.setVisible(false);
         this.round = 0;
         Point st_point = move.str_to_point(this.table_snake[0]);
-        this.P1.getAvatar().setLocation(st_point.x-20,st_point.y-20);
-        this.P2.getAvatar().setLocation(st_point.x-20,st_point.y-20);
-        this.P3.getAvatar().setLocation(st_point.x-20,st_point.y-20);
-        this.P4.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        //set start position avatar
+        gui.set_start_location(list_plyr, st_point);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +101,6 @@ public class MainWindows extends javax.swing.JFrame {
         bt_new_game = new javax.swing.JButton();
         bt_roll_dice = new javax.swing.JButton();
         bt_end_turn = new javax.swing.JButton();
-        bt_menu = new javax.swing.JButton();
         bt_exit = new javax.swing.JButton();
         label_control = new javax.swing.JLabel();
         label_win = new javax.swing.JLabel();
@@ -154,12 +113,6 @@ public class MainWindows extends javax.swing.JFrame {
         panel_bg.setBackground(new java.awt.Color(255, 255, 255));
 
         panel_table.setBackground(new java.awt.Color(255, 255, 255));
-
-        layer_play.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                layer_playMouseClicked(evt);
-            }
-        });
 
         label_P1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/P1.png"))); // NOI18N
         label_P1.setBounds(780, 590, 36, 35);
@@ -229,13 +182,13 @@ public class MainWindows extends javax.swing.JFrame {
         label_st_P4.setBounds(50, 250, 100, 50);
         layer_control.add(label_st_P4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        bt_new_game.setText("New Game");
+        bt_new_game.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/newgame.png"))); // NOI18N
         bt_new_game.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_new_gameActionPerformed(evt);
             }
         });
-        bt_new_game.setBounds(50, 400, 100, 50);
+        bt_new_game.setBounds(50, 590, 100, 50);
         layer_control.add(bt_new_game, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         bt_roll_dice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dice.png"))); // NOI18N
@@ -247,7 +200,7 @@ public class MainWindows extends javax.swing.JFrame {
         bt_roll_dice.setBounds(160, 470, 100, 100);
         layer_control.add(bt_roll_dice, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        bt_end_turn.setText("End Turn");
+        bt_end_turn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/endtern.png"))); // NOI18N
         bt_end_turn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_end_turnActionPerformed(evt);
@@ -255,10 +208,6 @@ public class MainWindows extends javax.swing.JFrame {
         });
         bt_end_turn.setBounds(50, 470, 100, 100);
         layer_control.add(bt_end_turn, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        bt_menu.setText("Menu");
-        bt_menu.setBounds(50, 590, 100, 50);
-        layer_control.add(bt_menu, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         bt_exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exit.png"))); // NOI18N
         bt_exit.addActionListener(new java.awt.event.ActionListener() {
@@ -318,78 +267,84 @@ public class MainWindows extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void layer_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_layer_playMouseClicked
-       
-    }//GEN-LAST:event_layer_playMouseClicked
-
     private void label_move_nextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_move_nextMouseClicked
         // check can move ?
-        if(move.can_move(this.cur_player)){
+        if (move.can_move(this.cur_player)) {
             // move avatar to target
-            this.cur_player.getAvatar().setLocation(this.label_move_next.getX()+5,this.label_move_next.getY()+5);
+            this.cur_player.getAvatar().setLocation(this.label_move_next.getX() + 5, this.label_move_next.getY() + 5);
         }
-        
+
         // set new current position
         int old_pos = this.cur_player.getCurrent_position();
-        this.cur_player.setCurrent_position(move.move_forward(old_pos, this.cur_player.getMove()));
-        
-        //check event on new current position
-        int new_pos = this.cur_player.getCurrent_position();
-        if(this.event_snake[new_pos] != 0){
-            this.cur_player.setCurrent_position(this.event_snake[new_pos]);
-            Point p_new_pos = move.str_to_point(this.table_snake[this.event_snake[new_pos]]);
-            this.cur_player.getAvatar().setLocation(p_new_pos.x-20,p_new_pos.y-20);
-        }
-        
-        //set move point = 0 after play in turn
-        this.cur_player.setMove(0);
-        
+        this.cur_player.setCurrent_position(move.move_forward(old_pos, 1));
+
+        //set move point decrease 1 after play in turn
+        this.cur_player.setMove(this.cur_player.getMove() - 1);
+        System.out.println("remain point" + this.cur_player.getMove());
+
         //check win
-        if(event.win(this.cur_player, move)){
-            label_win.setIcon(new ImageIcon(getClass().getResource("/img/winner_P"+this.cur_player.getOrder()+".jpg")));
+        if (event.win(this.cur_player, move)) {
+            label_win.setIcon(new ImageIcon(getClass().getResource("/img/winner_P" + this.cur_player.getOrder() + ".jpg")));
 //            label_win.setVisible(true);
             panel_table.setVisible(false);
         }
-        this.bt_end_turn.setEnabled(true);
-        this.label_move_next.setVisible(false);
+
+        // check end turn or move again
+        if (this.cur_player.getMove() == 0) {
+            this.bt_end_turn.setEnabled(true);
+
+            //check event on new current position
+            int new_pos = this.cur_player.getCurrent_position();
+            if (this.event_snake[new_pos] != 0) {
+                this.cur_player.setCurrent_position(this.event_snake[new_pos]);
+                Point p_new_pos = move.str_to_point(this.table_snake[this.event_snake[new_pos]]);
+                this.cur_player.getAvatar().setLocation(p_new_pos.x - 20, p_new_pos.y - 20);
+            }
+            this.label_move_next.setVisible(false);
+        } else {
+            int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_next, this.table_snake, next_pos);
+        }
+
     }//GEN-LAST:event_label_move_nextMouseClicked
 
     private void bt_roll_diceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_roll_diceActionPerformed
         this.label_move_next.setVisible(true);
         //check who is playing
-        int plyr = 4;
-        this.cur_player = event.selected_player(this.list_plyr, plyr, this.round);
+        this.cur_player = gui.selected_player(this.list_plyr, this.plyr_no, this.round);
 
-        
-        System.out.println("P"+(this.round % 2+1)+" Turn");
-        
+
+        System.out.println("P" + (this.round % 2 + 1) + " Turn");
+
         //random number
         this.move_point = dice.random_dice();
         dice.set_point_pic(this.bt_roll_dice, this.move_point);
-        
+
         //set move point to player
         this.cur_player.setMove(this.move_point);
-        System.out.println("Move Point : "+this.cur_player.getMove());
-        
+        System.out.println("Move Point : " + this.cur_player.getMove());
+
         //show icon target
-        int next_pos = move.move_forward(this.cur_player.getCurrent_position(), this.cur_player.getMove());
+        this.label_move_next.setVisible(true);
+        int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
         move.position_move(this.layer_play, this.label_move_next, this.table_snake, next_pos);
-       
+
         //set unenable
         this.bt_roll_dice.setEnabled(false);
         this.bt_end_turn.setEnabled(false);
+
+
     }//GEN-LAST:event_bt_roll_diceActionPerformed
 
     private void bt_end_turnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_end_turnActionPerformed
         // end turn
-        if(this.cur_player.getMove() == 0){
+        if (this.cur_player.getMove() == 0) {
             this.round++;
         }
-
         dice.set_point_pic(this.bt_roll_dice, 0);
         this.bt_roll_dice.setEnabled(true);
         this.bt_end_turn.setEnabled(false);
-        
+
     }//GEN-LAST:event_bt_end_turnActionPerformed
 
     private void bt_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_exitActionPerformed
@@ -401,7 +356,6 @@ public class MainWindows extends javax.swing.JFrame {
         setVisible(false);
         new MainWindows().setVisible(true);
     }//GEN-LAST:event_bt_new_gameActionPerformed
-
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -437,7 +391,6 @@ public class MainWindows extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_end_turn;
     private javax.swing.JButton bt_exit;
-    private javax.swing.JButton bt_menu;
     private javax.swing.JButton bt_new_game;
     private javax.swing.JButton bt_roll_dice;
     private javax.swing.JLabel label_P1;
