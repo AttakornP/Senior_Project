@@ -9,7 +9,7 @@
 package CoreAsset;
 
 import javax.swing.ImageIcon;
-import snackladder.*;
+
 
 public class Event {
 
@@ -54,7 +54,6 @@ public class Event {
         }
     }
     
-
     
     public int[] crate_event(String[] all_event, int[] list_event){
         for(int i = 0 ; i < all_event.length ; i++){
@@ -64,38 +63,24 @@ public class Event {
         return list_event;
     }
     
-    
-    public Player selected_player(Player[] list_plyr, int no_player, int round){
-        Player cur_player = new HardChoice.Player();
-        if(round % no_player == 0){
-            cur_player = list_plyr[0];
-            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P1.png")));
-            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
-            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
-            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
+        
+        public Player highest_point(Player[] list_plyr) {
+        Player max_point_player = new Player();
+        max_point_player = list_plyr[0];
+        for (int i = 1; i < list_plyr.length; i++) {
+            System.out.println("P"+list_plyr[i - 1].getOrder()+" Point : "+list_plyr[i - 1].getPoint());
+            System.out.println("P"+list_plyr[i].getOrder()+" Point : "+list_plyr[i].getPoint());
+            if (max_point_player.getPoint() == list_plyr[i].getPoint()) {
+                if (max_point_player.getCurrent_position() < list_plyr[i].getCurrent_position()) {
+                    max_point_player = list_plyr[i];
+                } 
+            } else if (max_point_player.getPoint() < list_plyr[i].getPoint()) {
+                max_point_player = list_plyr[i];
+            } 
+            System.out.println("P"+max_point_player.getOrder());
         }
-        else if(round % no_player == 1) {
-            cur_player = list_plyr[1];
-            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
-            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P2.png")));
-            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
-            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
-        }
-        else if(round % no_player == 2){
-            cur_player = list_plyr[2];
-            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
-            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
-            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P3.png")));
-            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P4.png")));
-        }
-        else {
-            cur_player = list_plyr[3];
-            list_plyr[0].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P1.png")));
-            list_plyr[1].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P2.png")));
-            list_plyr[2].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_not_P3.png")));
-            list_plyr[3].getLabel_playing().setIcon(new ImageIcon(getClass().getResource("/img/Status_P4.png")));
-        }
-        return cur_player;
+        System.out.println("P"+max_point_player.getOrder());
+        return max_point_player;
     }
     
 }

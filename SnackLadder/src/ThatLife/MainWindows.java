@@ -1,0 +1,771 @@
+/*
+ * Class Main Windows
+ * @Author  52363165 Attakorn  Poonkesorn
+ * @Since   2013 April 21
+ * @Note    JDK 1.7
+ * @Note    NetBeans IDE 7.1.2
+ * @Note    Windows7 32 bit
+ */
+package HardChoice;
+
+import snackladder.*;
+import java.awt.Point;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import CoreAsset.Dice;
+//import CoreAsset.Player;
+//import CoreAsset.Event;
+import CoreAsset.Move;
+import CoreAsset.Table;
+        
+
+public class MainWindows extends javax.swing.JFrame {
+
+    int number = 49;
+    Move move = new Move(0, this.number-1);
+    Player P1 = new Player();
+    Player P2 = new Player();
+    Player P3 = new Player();
+    Player P4 = new Player();
+    Dice dice = new Dice();
+    Table table = new Table();
+    Event event = new Event();
+    int move_point = 0;
+    int round;
+    Player cur_player;
+    String[] table_hc = new String[this.number];
+    int[] event_hc = new int[this.number];
+    Player[] list_plyr = {P1,P2,P3,P4};
+    int opposite_bridge = 0;
+    
+
+    public MainWindows() {
+        initComponents();
+        set_start_game();
+    }
+
+    public void set_start_game() {
+        // Set Player1
+        P1.setCurrent_position(0);
+        P1.setMove(0);
+        P1.setAvatar(label_P1);
+        P1.setEnd_status(false);
+        P1.setName("Med");
+        P1.setPoint(0);
+        P1.setPlaying(true);
+        P1.setOrder(1);
+        P1.setLabel_point(label_point_p1);
+        P1.setBridge_point(0);
+        P1.setLabel_bridge_point(this.label_bridge_p1);
+        P1.setLabel_playing(this.label_st_P1);
+        P1.setPlaying(false);
+        // Set Player2
+        P2.setCurrent_position(0);
+        P2.setMove(6);
+        P2.setAvatar(label_P2);
+        P2.setEnd_status(false);
+        P2.setName("Yuiiz");
+        P2.setPoint(0);
+        P2.setPlaying(true);
+        P2.setOrder(2);
+        P2.setLabel_point(label_point_p2);
+        P2.setBridge_point(0);
+        P2.setLabel_bridge_point(this.label_bridge_p2);
+        P2.setLabel_playing(this.label_st_P2);
+        P2.setPlaying(false);
+        // Set Player2
+        P3.setCurrent_position(0);
+        P3.setMove(6);
+        P3.setAvatar(label_P3);
+        P3.setEnd_status(false);
+        P3.setName("Meddy");
+        P3.setPoint(0);
+        P3.setPlaying(true);
+        P3.setOrder(3);
+        P3.setLabel_point(label_point_p3);
+        P3.setBridge_point(0);
+        P3.setLabel_bridge_point(this.label_bridge_p3);
+        P3.setLabel_playing(this.label_st_P3);
+        P3.setPlaying(false);
+        // Set Player2
+        P4.setCurrent_position(0);
+        P4.setMove(6);
+        P4.setAvatar(label_P4);
+        P4.setEnd_status(false);
+        P4.setName("Yuyi");
+        P4.setPoint(0);
+        P4.setPlaying(true);
+        P4.setOrder(4);
+        P4.setLabel_point(label_point_p4);
+        P4.setBridge_point(0);
+        P4.setLabel_bridge_point(this.label_bridge_p4);
+        P4.setLabel_playing(this.label_st_P4);
+        P4.setPlaying(false);
+        
+        // create table
+        int[] selected = {96,84,72,60,48,24,12,0,2,14,26,38,50,62,86,87,88,76,64,52,40,16,4,5,6,18,30,42,54,66,90,102,104,92,80,68,56,44,20,8,9,10,22,34,46,58,70,94,106};
+        System.out.println("lenght"+selected.length);
+        this.table_hc = table.create_table(selected);
+        
+        // create event
+        String[] all_event = {"3,+1", "4,+1", "8,+1", "14,+1", "15,+1", "18,+1", "21,+1", "23,+1", "26,+1", "28,+1", "32,+1,", "34,+1", "37,+1", "41,+1", "44,+1", "46,+1", 
+            "12,19", "19,12", "29,35", "35,29", "36,45", "45,36"};
+        int[] list_event = new int[selected.length];
+        for(int i = 0 ; i < selected.length ; i++){
+            list_event[i] = 0;
+        }
+        this.event_hc = event.crate_event(all_event, list_event);
+        
+        // set start value
+//        this.label_win.setVisible(false);
+        this.bt_end_turn.setEnabled(false);
+        panel_table.setVisible(true);
+        bt_roll_dice.setEnabled(true);
+        this.round = 0;
+        Point st_point = move.str_to_point(this.table_hc[0]);
+        
+        // set icon target to hide
+        this.label_move_next.setVisible(false);
+        this.label_move_prev.setVisible(false);
+        this.label_move_bridge.setVisible(false);
+        
+        //set start position avatar
+        P1.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        P2.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        P3.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        P4.getAvatar().setLocation(st_point.x-20,st_point.y-20);
+        //set start player point
+        P1.getLabel_point().setText(Integer.toString(P1.getPoint()));
+        P2.getLabel_point().setText(Integer.toString(P2.getPoint()));
+        P3.getLabel_point().setText(Integer.toString(P3.getPoint()));
+        P4.getLabel_point().setText(Integer.toString(P4.getPoint()));
+        //set start player bridge point
+        P1.getLabel_bridge_point().setText(Integer.toString(0));
+        P2.getLabel_bridge_point().setText(Integer.toString(0));
+        P3.getLabel_bridge_point().setText(Integer.toString(0));
+        P4.getLabel_bridge_point().setText(Integer.toString(0));
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        panel_bg = new javax.swing.JPanel();
+        layer_bg = new javax.swing.JLayeredPane();
+        panel_table = new javax.swing.JPanel();
+        layer_table = new javax.swing.JLayeredPane();
+        layer_play = new javax.swing.JLayeredPane();
+        label_P1 = new javax.swing.JLabel();
+        label_P2 = new javax.swing.JLabel();
+        label_P3 = new javax.swing.JLabel();
+        label_P4 = new javax.swing.JLabel();
+        label_move_next = new javax.swing.JLabel();
+        label_move_prev = new javax.swing.JLabel();
+        label_move_bridge = new javax.swing.JLabel();
+        label_table = new javax.swing.JLabel();
+        panel_control = new javax.swing.JPanel();
+        layer_control = new javax.swing.JLayeredPane();
+        label_st_P1 = new javax.swing.JLabel();
+        label_st_P2 = new javax.swing.JLabel();
+        label_st_P3 = new javax.swing.JLabel();
+        label_st_P4 = new javax.swing.JLabel();
+        point_p1 = new javax.swing.JLabel();
+        bridge_p1 = new javax.swing.JLabel();
+        bt_new_game = new javax.swing.JButton();
+        bt_roll_dice = new javax.swing.JButton();
+        bt_end_turn = new javax.swing.JButton();
+        bt_menu = new javax.swing.JButton();
+        bt_exit = new javax.swing.JButton();
+        label_control = new javax.swing.JLabel();
+        point_p2 = new javax.swing.JLabel();
+        bridge_p2 = new javax.swing.JLabel();
+        point_p3 = new javax.swing.JLabel();
+        bridge_p3 = new javax.swing.JLabel();
+        point_p4 = new javax.swing.JLabel();
+        bridge_p4 = new javax.swing.JLabel();
+        label_point_p1 = new javax.swing.JLabel();
+        label_bridge_p1 = new javax.swing.JLabel();
+        label_point_p2 = new javax.swing.JLabel();
+        label_bridge_p2 = new javax.swing.JLabel();
+        label_point_p3 = new javax.swing.JLabel();
+        label_bridge_p3 = new javax.swing.JLabel();
+        label_point_p4 = new javax.swing.JLabel();
+        label_bridge_p4 = new javax.swing.JLabel();
+        label_win = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hard Choices Game");
+        setName("MainFrame"); // NOI18N
+        setResizable(false);
+
+        panel_bg.setBackground(new java.awt.Color(255, 255, 255));
+
+        panel_table.setBackground(new java.awt.Color(255, 255, 255));
+
+        layer_play.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                layer_playMouseClicked(evt);
+            }
+        });
+
+        label_P1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/P1.png"))); // NOI18N
+        label_P1.setBounds(160, 620, 36, 35);
+        layer_play.add(label_P1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_P2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/P2.png"))); // NOI18N
+        label_P2.setBounds(120, 620, 36, 35);
+        layer_play.add(label_P2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_P3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/P3.png"))); // NOI18N
+        label_P3.setBounds(30, 620, 36, 35);
+        layer_play.add(label_P3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_P4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/P4.png"))); // NOI18N
+        label_P4.setBounds(80, 620, 36, 35);
+        layer_play.add(label_P4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_move_next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/target.png"))); // NOI18N
+        label_move_next.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label_move_nextMouseClicked(evt);
+            }
+        });
+        label_move_next.setBounds(710, 590, 44, 44);
+        layer_play.add(label_move_next, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_move_prev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/target.png"))); // NOI18N
+        label_move_prev.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label_move_prevMouseClicked(evt);
+            }
+        });
+        label_move_prev.setBounds(810, 590, 44, 44);
+        layer_play.add(label_move_prev, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_move_bridge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/target.png"))); // NOI18N
+        label_move_bridge.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label_move_bridgeMouseClicked(evt);
+            }
+        });
+        label_move_bridge.setBounds(760, 590, 44, 44);
+        layer_play.add(label_move_bridge, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        layer_play.setBounds(0, 0, 888, 666);
+        layer_table.add(layer_play, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_table.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/table_hardchoice.png"))); // NOI18N
+        label_table.setBounds(0, 0, 888, 666);
+        layer_table.add(label_table, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout panel_tableLayout = new javax.swing.GroupLayout(panel_table);
+        panel_table.setLayout(panel_tableLayout);
+        panel_tableLayout.setHorizontalGroup(
+            panel_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_tableLayout.createSequentialGroup()
+                .addComponent(layer_table, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panel_tableLayout.setVerticalGroup(
+            panel_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_tableLayout.createSequentialGroup()
+                .addComponent(layer_table, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        panel_table.setBounds(0, 0, 890, 666);
+        layer_bg.add(panel_table, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        panel_control.setBackground(new java.awt.Color(255, 255, 255));
+
+        label_st_P1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Status_not_P1.png"))); // NOI18N
+        label_st_P1.setBounds(50, 40, 100, 50);
+        layer_control.add(label_st_P1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_st_P2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Status_not_P2.png"))); // NOI18N
+        label_st_P2.setBounds(50, 110, 100, 50);
+        layer_control.add(label_st_P2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_st_P3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Status_not_P3.png"))); // NOI18N
+        label_st_P3.setBounds(50, 180, 100, 50);
+        layer_control.add(label_st_P3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_st_P4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Status_not_P4.png"))); // NOI18N
+        label_st_P4.setBounds(50, 250, 100, 50);
+        layer_control.add(label_st_P4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        point_p1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        point_p1.setText("Point : ");
+        point_p1.setBounds(180, 40, 58, 20);
+        layer_control.add(point_p1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bridge_p1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        bridge_p1.setText("Bridge :");
+        bridge_p1.setBounds(170, 70, 70, 20);
+        layer_control.add(bridge_p1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bt_new_game.setText("New Game");
+        bt_new_game.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_new_gameActionPerformed(evt);
+            }
+        });
+        bt_new_game.setBounds(50, 400, 100, 50);
+        layer_control.add(bt_new_game, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bt_roll_dice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dice.png"))); // NOI18N
+        bt_roll_dice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_roll_diceActionPerformed(evt);
+            }
+        });
+        bt_roll_dice.setBounds(160, 470, 100, 100);
+        layer_control.add(bt_roll_dice, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bt_end_turn.setText("End Turn");
+        bt_end_turn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_end_turnActionPerformed(evt);
+            }
+        });
+        bt_end_turn.setBounds(50, 470, 100, 100);
+        layer_control.add(bt_end_turn, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bt_menu.setText("Menu");
+        bt_menu.setBounds(50, 590, 100, 50);
+        layer_control.add(bt_menu, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bt_exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exit.png"))); // NOI18N
+        bt_exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_exitActionPerformed(evt);
+            }
+        });
+        bt_exit.setBounds(160, 590, 100, 50);
+        layer_control.add(bt_exit, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_control.setBackground(new java.awt.Color(255, 255, 255));
+        label_control.setBounds(0, 0, 0, 0);
+        layer_control.add(label_control, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        point_p2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        point_p2.setText("Point : ");
+        point_p2.setBounds(180, 110, 58, 20);
+        layer_control.add(point_p2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bridge_p2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        bridge_p2.setText("Bridge :");
+        bridge_p2.setBounds(170, 140, 70, 20);
+        layer_control.add(bridge_p2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        point_p3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        point_p3.setText("Point : ");
+        point_p3.setBounds(180, 180, 58, 20);
+        layer_control.add(point_p3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bridge_p3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        bridge_p3.setText("Bridge :");
+        bridge_p3.setBounds(170, 210, 70, 20);
+        layer_control.add(bridge_p3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        point_p4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        point_p4.setText("Point : ");
+        point_p4.setBounds(180, 250, 58, 20);
+        layer_control.add(point_p4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        bridge_p4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        bridge_p4.setText("Bridge :");
+        bridge_p4.setBounds(170, 280, 70, 20);
+        layer_control.add(bridge_p4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_point_p1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_point_p1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_point_p1.setBounds(240, 40, 50, 20);
+        layer_control.add(label_point_p1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_bridge_p1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_bridge_p1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_bridge_p1.setBounds(240, 70, 50, 20);
+        layer_control.add(label_bridge_p1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_point_p2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_point_p2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_point_p2.setBounds(240, 110, 50, 20);
+        layer_control.add(label_point_p2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_bridge_p2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_bridge_p2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_bridge_p2.setBounds(240, 140, 50, 20);
+        layer_control.add(label_bridge_p2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_point_p3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_point_p3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_point_p3.setBounds(240, 180, 50, 20);
+        layer_control.add(label_point_p3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_bridge_p3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_bridge_p3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_bridge_p3.setBounds(240, 210, 50, 20);
+        layer_control.add(label_bridge_p3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_point_p4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_point_p4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_point_p4.setBounds(240, 250, 50, 20);
+        layer_control.add(label_point_p4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_bridge_p4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        label_bridge_p4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_bridge_p4.setBounds(240, 280, 50, 20);
+        layer_control.add(label_bridge_p4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout panel_controlLayout = new javax.swing.GroupLayout(panel_control);
+        panel_control.setLayout(panel_controlLayout);
+        panel_controlLayout.setHorizontalGroup(
+            panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_controlLayout.createSequentialGroup()
+                .addComponent(layer_control, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panel_controlLayout.setVerticalGroup(
+            panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_controlLayout.createSequentialGroup()
+                .addComponent(layer_control, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        panel_control.setBounds(900, 0, 300, 666);
+        layer_bg.add(panel_control, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        label_win.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/winner_P1.jpg"))); // NOI18N
+        label_win.setBounds(140, 10, 650, 650);
+        layer_bg.add(label_win, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout panel_bgLayout = new javax.swing.GroupLayout(panel_bg);
+        panel_bg.setLayout(panel_bgLayout);
+        panel_bgLayout.setHorizontalGroup(
+            panel_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(layer_bg, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+        );
+        panel_bgLayout.setVerticalGroup(
+            panel_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(layer_bg, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void layer_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_layer_playMouseClicked
+       
+    }//GEN-LAST:event_layer_playMouseClicked
+
+    private void label_move_nextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_move_nextMouseClicked
+        // check can move ?
+        if (move.can_move(this.cur_player)) {
+            // move avatar to target
+            this.cur_player.getAvatar().setLocation(this.label_move_next.getX() + 5, this.label_move_next.getY() + 5);
+        }
+        
+        // set new current position
+        int old_pos = this.cur_player.getCurrent_position();
+        this.cur_player.setCurrent_position(move.move_forward(old_pos, 1));
+
+        
+        if(this.cur_player.getCurrent_position() > 0){
+            this.label_move_prev.setVisible(true);
+            System.out.println("current : "+this.cur_player.getCurrent_position());
+            int prev_pos = move.move_backward(this.cur_player.getCurrent_position(), 1);
+            System.out.println("backward : "+prev_pos);
+            move.position_move(this.layer_play, this.label_move_prev, this.table_hc, prev_pos);
+        }
+        
+        label_move_bridge.setVisible(false);
+        //check event on found bridge
+        int new_pos = this.cur_player.getCurrent_position();
+        if (this.event_hc[new_pos] != 1 && this.event_hc[new_pos] != 0) {  
+            label_move_bridge.setVisible(true);
+            this.opposite_bridge = this.event_hc[new_pos];
+            move.position_move(this.layer_play, this.label_move_bridge, this.table_hc, this.event_hc[new_pos]);
+        }
+
+        //set move point decrease 1 after play in turn
+        this.cur_player.setMove(this.cur_player.getMove() - 1);
+        System.out.println("remain point" + this.cur_player.getMove());
+
+        //check win
+        if (event.win(this.cur_player, move)) {
+            this.cur_player.setPoint(this.cur_player.getPoint()+3);
+            Player winer = event.highest_point(this.list_plyr);
+            label_win.setIcon(new ImageIcon(getClass().getResource("/img/winner_P" + winer.getOrder() + ".jpg")));
+//            label_win.setVisible(true);
+            panel_table.setVisible(false);
+        }
+
+        // check end turn or move again
+        if (this.cur_player.getMove() == 0) {
+            this.bt_end_turn.setEnabled(true);
+
+            //check event get tool
+            if (this.event_hc[this.cur_player.getCurrent_position()] == 1) {
+                this.cur_player.setPoint(this.cur_player.getPoint() + 1);
+            }
+            this.cur_player.getLabel_point().setText(Integer.toString(this.cur_player.getPoint()));
+            this.label_move_next.setVisible(false);
+            this.label_move_prev.setVisible(false);
+            this.label_move_bridge.setVisible(false);
+        } else {
+            int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_next, this.table_hc, next_pos);
+        }
+    }//GEN-LAST:event_label_move_nextMouseClicked
+
+    private void bt_roll_diceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_roll_diceActionPerformed
+        //check who is playing
+        int plyr = 2;
+        this.cur_player = (Player)event.selected_player(this.list_plyr, plyr, this.round);
+        
+        System.out.println("P"+(this.round % 2+1)+" Turn");
+        
+        //random number
+        this.move_point = dice.random_dice();
+        dice.set_point_pic(this.bt_roll_dice, this.move_point);
+        
+        //set move point to player
+        this.cur_player.setMove(this.move_point);
+        System.out.println("Move Point : "+this.cur_player.getMove());
+        
+        //show icon target
+        this.label_move_next.setVisible(true);
+        int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
+        move.position_move(this.layer_play, this.label_move_next, this.table_hc, next_pos);
+        
+        if(this.cur_player.getCurrent_position() > 0){
+            this.label_move_prev.setVisible(true);
+            int prev_pos = move.move_backward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_prev, this.table_hc, prev_pos);
+        }
+        
+        //check event on found bridge
+        int new_pos = this.cur_player.getCurrent_position();
+        if (this.event_hc[new_pos] != 1 && this.event_hc[new_pos] != 0) {  
+            label_move_bridge.setVisible(true);
+            this.opposite_bridge = this.event_hc[new_pos];
+            move.position_move(this.layer_play, this.label_move_bridge, this.table_hc, this.event_hc[new_pos]);
+        }
+        
+        //set unenable
+        this.bt_roll_dice.setEnabled(false);
+        this.bt_end_turn.setEnabled(false);
+    }//GEN-LAST:event_bt_roll_diceActionPerformed
+
+    private void bt_end_turnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_end_turnActionPerformed
+        // end turn
+        if(this.cur_player.getMove() == 0){
+            this.round++;
+        }
+
+        dice.set_point_pic(this.bt_roll_dice, 0);
+        this.bt_roll_dice.setEnabled(true);
+        this.bt_end_turn.setEnabled(false);
+        
+    }//GEN-LAST:event_bt_end_turnActionPerformed
+
+    private void bt_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_bt_exitActionPerformed
+
+    private void bt_new_gameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_new_gameActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new MainWindows().setVisible(true);
+    }//GEN-LAST:event_bt_new_gameActionPerformed
+
+    private void label_move_prevMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_move_prevMouseClicked
+        // TODO add your handling code here:
+        if (move.can_move(this.cur_player)) {
+            // move avatar to target
+            this.cur_player.getAvatar().setLocation(this.label_move_prev.getX() + 5, this.label_move_prev.getY() + 5);
+        }
+// set new current position
+        int old_pos = this.cur_player.getCurrent_position();
+        this.cur_player.setCurrent_position(move.move_backward(old_pos, 1));
+
+        
+        if(this.cur_player.getCurrent_position() > 0){
+            this.label_move_next.setVisible(true);
+            int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_next, this.table_hc, next_pos);
+        }
+        
+        label_move_bridge.setVisible(false);
+        //check event on found bridge
+        int new_pos = this.cur_player.getCurrent_position();
+        if (this.event_hc[new_pos] != 1 && this.event_hc[new_pos] != 0) {  
+            label_move_bridge.setVisible(true);
+            this.opposite_bridge = this.event_hc[new_pos];
+            move.position_move(this.layer_play, this.label_move_bridge, this.table_hc, this.event_hc[new_pos]);
+        }
+
+        //set move point decrease 1 after play in turn
+        this.cur_player.setMove(this.cur_player.getMove() - 1);
+        System.out.println("remain point" + this.cur_player.getMove());
+
+        // check end turn or move again
+        if (this.cur_player.getMove() == 0) {
+            this.bt_end_turn.setEnabled(true);
+
+            //check event get tool
+            if (this.event_hc[this.cur_player.getCurrent_position()] == 1) {
+                this.cur_player.setPoint(this.cur_player.getPoint() + 1);
+            }
+            this.cur_player.getLabel_point().setText(Integer.toString(this.cur_player.getPoint()));
+            this.label_move_next.setVisible(false);
+            this.label_move_prev.setVisible(false);
+            this.label_move_bridge.setVisible(false);
+        } else {
+            int prev_pos = move.move_backward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_prev, this.table_hc, prev_pos);
+        }
+    }//GEN-LAST:event_label_move_prevMouseClicked
+
+    private void label_move_bridgeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_move_bridgeMouseClicked
+        // TODO add your handling code here:
+        
+        if (move.can_move(this.cur_player)) {
+            // move avatar to target
+            this.cur_player.getAvatar().setLocation(this.label_move_bridge.getX() + 5, this.label_move_bridge.getY() + 5);
+        }
+
+        // set new current position
+        this.cur_player.setCurrent_position(this.opposite_bridge);
+
+        
+        if(this.cur_player.getCurrent_position() > 0){
+            this.label_move_prev.setVisible(true);
+            System.out.println("current : "+this.cur_player.getCurrent_position());
+            int prev_pos = move.move_backward(this.cur_player.getCurrent_position(), 1);
+            System.out.println("backward : "+prev_pos);
+            move.position_move(this.layer_play, this.label_move_prev, this.table_hc, prev_pos);
+        }
+        
+        
+        //check event on last current position
+        int new_pos = this.cur_player.getCurrent_position();
+        if (this.event_hc[new_pos] != 1 && this.event_hc[new_pos] != 0) {  
+            label_move_bridge.setVisible(true);
+            move.position_move(this.layer_play, this.label_move_bridge, this.table_hc, this.event_hc[new_pos]);
+        }
+
+        //set move point decrease 1 after play in turn
+        this.cur_player.setMove(this.cur_player.getMove() - 1);
+        System.out.println("remain point" + this.cur_player.getMove());
+
+
+        // check end turn or move again
+        if (this.cur_player.getMove() == 0) {
+            this.bt_end_turn.setEnabled(true);
+
+            //check event get tool
+            if (this.event_hc[this.cur_player.getCurrent_position()] == 1) {
+                this.cur_player.setPoint(this.cur_player.getPoint() + 1);
+            }
+            this.cur_player.getLabel_point().setText(Integer.toString(this.cur_player.getPoint()));
+            this.label_move_next.setVisible(false);
+            this.label_move_prev.setVisible(false);
+            this.label_move_bridge.setVisible(false);
+        } else {
+            int next_pos = move.move_forward(this.cur_player.getCurrent_position(), 1);
+            move.position_move(this.layer_play, this.label_move_next, this.table_hc, next_pos);
+            this.label_move_bridge.setVisible(false);
+        }
+    }//GEN-LAST:event_label_move_bridgeMouseClicked
+
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainWindows.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainWindows.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainWindows.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWindows.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainWindows().setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bridge_p1;
+    private javax.swing.JLabel bridge_p2;
+    private javax.swing.JLabel bridge_p3;
+    private javax.swing.JLabel bridge_p4;
+    private javax.swing.JButton bt_end_turn;
+    private javax.swing.JButton bt_exit;
+    private javax.swing.JButton bt_menu;
+    private javax.swing.JButton bt_new_game;
+    private javax.swing.JButton bt_roll_dice;
+    private javax.swing.JLabel label_P1;
+    private javax.swing.JLabel label_P2;
+    private javax.swing.JLabel label_P3;
+    private javax.swing.JLabel label_P4;
+    private javax.swing.JLabel label_bridge_p1;
+    private javax.swing.JLabel label_bridge_p2;
+    private javax.swing.JLabel label_bridge_p3;
+    private javax.swing.JLabel label_bridge_p4;
+    private javax.swing.JLabel label_control;
+    private javax.swing.JLabel label_move_bridge;
+    private javax.swing.JLabel label_move_next;
+    private javax.swing.JLabel label_move_prev;
+    private javax.swing.JLabel label_point_p1;
+    private javax.swing.JLabel label_point_p2;
+    private javax.swing.JLabel label_point_p3;
+    private javax.swing.JLabel label_point_p4;
+    private javax.swing.JLabel label_st_P1;
+    private javax.swing.JLabel label_st_P2;
+    private javax.swing.JLabel label_st_P3;
+    private javax.swing.JLabel label_st_P4;
+    private javax.swing.JLabel label_table;
+    private javax.swing.JLabel label_win;
+    private javax.swing.JLayeredPane layer_bg;
+    private javax.swing.JLayeredPane layer_control;
+    private javax.swing.JLayeredPane layer_play;
+    private javax.swing.JLayeredPane layer_table;
+    private javax.swing.JPanel panel_bg;
+    private javax.swing.JPanel panel_control;
+    private javax.swing.JPanel panel_table;
+    private javax.swing.JLabel point_p1;
+    private javax.swing.JLabel point_p2;
+    private javax.swing.JLabel point_p3;
+    private javax.swing.JLabel point_p4;
+    // End of variables declaration//GEN-END:variables
+}

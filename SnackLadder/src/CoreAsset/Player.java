@@ -8,7 +8,6 @@
  */
 package CoreAsset;
 
-import snackladder.*;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
