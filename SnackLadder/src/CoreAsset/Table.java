@@ -41,22 +41,6 @@ public class Table {
         }
         return table;
     }
-    
-    public void draw_table(String[] table){
-        System.out.println("==================================================================================");
-        for(int i = 0 ; i < table.length ; i++){
-            if((i+1) < 10){
-                System.out.print("||   "+(i+1)+"  ");
-            }
-            else{
-                System.out.print("||  "+(i+1)+"  ");
-            }
-            if((i+1)%10 == 0){
-                System.out.println("||");
-                System.out.println("==================================================================================");
-            }
-        }
-    }
-    
+       
     
 }
